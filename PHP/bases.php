@@ -360,6 +360,12 @@ while ( $i <= 10 )
     echo $i.'x';
     $i += 2;
 }
+//boucle for
+echo '<hr>';
+for ( $j=0 ; $j <=10 ; $j++)
+{
+    echo $j.'#';
+}
 
 ?>
 <br>
