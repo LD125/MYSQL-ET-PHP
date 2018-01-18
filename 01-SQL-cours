@@ -1,0 +1,525 @@
+sgbd: systeme de gestion de base de données (oracle,mysql)
+phpmyadmin permet de gérer la bdd de manière visuelle.
+
+crud : create,read,update,delete : ce sont les 4 ops fondamentales d'une bdd
+-create : insert replace
+-read : select
+-update : update
+- delete : delete
+
+
+
+- create database = crée bdd
+- show databases = display différentes bdds
+--> create database ; show databases;
+
+- use toto = specifie la bdd utilisée
+- drop database = supprime la bdd
+
+- drop table = supprime une table
+-truncate table = réinitailise les index
+
+select : permet de selectionner des critères avec "*"(tous les champs) ou
+spécifié avec "nom,prenom" FROM "employes".
+
+where : condition, fonctionne avec les opérateurs logiques.
+distinct : affiche les valeurs différentes du champs concerné.
+
+
+//** SELECT nom,prenom,service FROM employes WHERE service='informatique' *//
+//*SELECT nom,prenom, date_embauche FROM employes WHERE date_embauche BETWEEN '2010-01-01' AND '2016-01-11' *//
+BETWEEN et AND fonctionne ensemble.
+
+
+/*SELECT nom,prenom,salaire FROM employes WHERE salaire BETWEEN '2000' AND '4000' */
+
+/*SELECT * FROM `employes` WHERE prenom LIKE 'd%'*/
+select quelque chose qui COMMENCE par 'd'.
+
+SELECT * FROM `employes` WHERE prenom LIKE '%n*/
+select un prenom qui FINIT par 'n'.
+
+SELECT * FROM `employes` WHERE prenom LIKE '%mi%'
+select les prenoms qui contiennent la charchain 'mi'.
+
+SELECT * FROM `employes` WHERE prenom LIKE '%-%'
+select les prenoms composés '-'.
+
+SELECT * FROM `employes` WHERE service != 'informatique'
+select les employes n'apparetenant pas au service informatique.
+
+SELECT prenom FROM employes ORDER BY prenom ASC;
+dans l'ordre ASCENDANT (croissant).
+
+SELECT prenom FROM employes ORDER BY prenom DESC;
+dans l'ordre DESCENDANT (décroissant).
+
+SELECT nom,prenom,salaire FROM `employes` WHERE salaire > 2000 ORDER BY salaire DESC
+
+SELECT nom,prenom,salaire FROM `employes` WHERE salaire > 2000 ORDER BY salaire DESC LIMIT 0,3
+les 3 premiers (par pagination).
+
+SELECT nom,prenom,salaire FROM `employes` WHERE salaire > 2000 ORDER BY salaire DESC LIMIT 3,3
+les 3 suivants, sur 3 enregistrements.
+
+limit -> 'à partir de','sur combien d'enregistrement'.
+
+
+SELECT nom,prenom,salaire*12 FROM `employes`
+construit une colonne "salaire*12" salaire annuel.
+
+SELECT nom,prenom,salaire*12 AS salaire_annuel FROM `employes`
+construit une colonne as=salaire_annuel.
+
+SELECT SUM(salaire*12) FROM employes
+masse salariale -> SELECT SUM(salaire*12) AS masse_salariale FROM employes.
+
+SELECT ROUND(AVG(salaire)) AS salaire_moyen_arrondi FROM employes
+round = arrondi AVG = salaire moyen.
+
+SELECT COUNT(*) FROM employes WHERE sexe='f'
+nombre de femmes dans l'entreprise.
+
+SELECT MAX(salaire) FROM employes -> salaire max
+SELECT MIN(salaire) FROM employes  -> salaire min
+
+Requête imbriquée:
+SELECT prenom,salaire FROM `employes` WHERE salaire = (SELECT MIN(salaire) FROM employes)
+
+SELECT * FROM `employes` WHERE service='informatique' OR service='comptabilite'
+les employés d'un service ou l'autre.
+
+SELECT * FROM `employes` WHERE service='informatique' AND salaire > 1800
+les employés du service info ayant un salaire > à 1800
+
+SELECT * FROM `employes` WHERE service IN ('informatique','comptabilite','direction')
+SELECT * FROM `employes` WHERE service NOT IN ('informatique','comptabilite','direction')
+selection dans des services spécifiés.
+
+SELECT * FROM `employes` WHERE service = 'production' AND (salaire=1900 OR salaire=2300)
+les employés du service prod ET ayant un salaire de 1900 OU 2300.
+
+SELECT service, COUNT(*) AS Nombre FROM `employes` GROUP BY service
+comptage d'enregistrement par service.
+
+SELECT service, COUNT(*) AS Nombre FROM `employes` GROUP BY service HAVING COUNT(*) > 2
+service ayant plus de deux personnes.
+
+SELECT service,sexe, COUNT(*) AS Nombre FROM `employes` GROUP BY service,sexe
+nombre de personnes par services selon le sexe.
+
+
+/*****************************************************/
+->INSERTION
+*-INSERT INTO employes (prenom,nom,sexe,service,date_embauche,salaire) VALUES ('alexis','richy','m','informatique','2019-01-15',1800)
+*-INSERT INTO employes VALUES (NULL,'Claire','durand','f','secretariat','2017-10-15',1900)
+null définira automatically l'id de l'incrémentation, si l'id est définie manuellement, l'incrémentation suivante reprendra la valeur de celle-ci.
+
+
+SELECT * FROM `employes` WHERE id-employes=1020;
+UPDATE employes SET salaire = 1500 WHERE id_employes=1020;
+SELECT * FROM `employes` WHERE id-employes=1020;
+définir un nouveau salaire à un ID spécifié grâce à UPDATE/SET.
+utilsation d'opérateurs logiques possible.
+
+UPDATE employes SET salaire = 1300, date_embauche='2015-06-01' WHERE id_employes=1020;
+modification de plusieurs champs à la suite.
+
+REPLACE INTO employes VALUES(8000, 'test2','test2','m','marketing','2010-07-05', 2601)
+remplace/met à jour si il trouve un ID
+l'avantage du REPLACE si on lui precise un ID null il le crée sinon il remplace.
+Plus utilisé lorsque l'intégralité des champs doit être réecrite.
+
+delete = vide la table
+truncate = vide la table + réinitiailise la valeur d'index
+
+/*******************************************************----/
+SELECT ville, SUM(chiffre_affaires) FROM localite GROUP BY ville
+permet d'obtenir le chiffre_affaires total(sum - tous secteurs confondus) par ville
+
+SELECT ville, SUM(chiffre_affaires) FROM localite GROUP BY ville HAVING SUM(chiffre_affaires) > 500000 ORDER BY SUM(chiffre_affaires) DESC
+CA des villes de plus de 500k toutes sections confondues.
+
+
+
+EXERCICE :
+$1- Insérer une nouvelle ville dans loclite (secteur, et CA au  choix)
+INSERT INTO localite VALUES (NULL,'60','poissy','777888')
+
+$2- Quel est le prénom de l'employé 547
+SELECT prenom FROM `employes2` WHERE id_employes=547 -> Mélanie
+
+3- Quel est le salaire d'Amandine
+SELECT salaire FROM `employes2` WHERE prenom='Amandine'  -> 1500
+
+$4- Combien d'employés gagnent 2000€/mois ?
+SELECT COUNT(*) FROM `employes2` WHERE salaire=2000 -> 1
+
+$5- Afficher les employés du service commercial
+SELECT prenom,nom,service FROM `employes2` WHERE service='commercial'
+
+$6- Afficher les employés embauchés durant l'année 2010
+-SELECT * FROM `employes2` WHERE date_embauche BETWEEN '2010-01-01' AND '2010-12-31' -> 0
+-SELECT * FROM employes WHERE date_embauche LIKE '2010%'
+-SELECT * FROM employes WHERE date_embauche >= '2010-01-01' AND date_embauche <='2010-12-31'
+
+$7- Afficher l'employé ayant le salaire le plus élevé
+-SELECT nom,prenom,MAX(salaire) FROM `employes2` -> 5k € JP laborde
+-SELECT * FROM employes WHERE salaire = (SELECT MAX(salaire) FROM employes)
+-SELECT * FROM employes ORDER BY salaire DESC LIMIT 0,1
+
+$8- Quel est le nom de Guillaume ?
+SELECT nom FROM `employes2` WHERE prenom='Guillaume' -> Miller
+
+$9- Afficher tous les employes sauf ceux du service production et secretariat.
+SELECT * FROM employes2 WHERE service!='production';
+SELECT * FROM employes2 WHERE service!='secretariat';
+
+SELECT * FROM employes WHERE service NOT IN ('production','secretariat')
+
+$10- Afficher les infos de l'employé le mieux payé du service commercial.
+SELECT nom,prenom,sexe,date_embauche,MAX(salaire) FROM employes2 WHERE service='commercial'
+
+SELECT * FROM employes WHERE salaire = (SELECT MAX(salaire) FROM employes WHERE service='commercial')
+
+/********************************************************--/
+
+SELECT titre FROM livre WHERE id_livre IN (SELECT id_livre FROM emprunt WHERE date_rendu IS NULL)
+2 tables liées, une liste produite à partir d'un autre requête.
+
+SELECT prenom FROM abonne WHERE id_abonne IN (SELECT id_abonne FROM emprunt WHERE date_rendu IS NULL)
+les prenoms des personnes n'ayant pas rendu leur livre.
+
+SELECT prenom FROM abonne WHERE id_abonne IN (SELECT id_abonne FROM emprunt WHERE date_sortie='2014-12-19')
+
+SELECT COUNT(*) AS Nb_de_livres FROM emprunt WHERE id_abonne=(SELECT id_abonne FROM abonne WHERE prenom='Guillaume')
+
+Jointure entre 3 tables avec des requêtes inmbriquées.
+$MariaDB [bibliothèque]> SELECT prenom FROM abonne WHERE id_abonne IN (SELECT id_abonne FROM emprunt WHERE id_livre IN (SELECT id_livre FROM livre WHERE auteur='ALPHONSE DAUDET') );
+--
+*Quels sont les livres que Chloé a emprunté ?
+$MariaDB [bibliothèque]> SELECT titre FROM livre WHERE id_livre IN (SELECT id_livre FROM emprunt WHERE id_abonne = ( SELECT id_abonne FROM abonne WHERE prenom = 'Chloe') );
+
+*Quels sont les livres que Chloé n'a pas emprunté
+$MariaDB [bibliothèque]> SELECT titre FROM livre WHERE id_livre NOT IN (SELECT id_livre FROM emprunt WHERE id_abonne = (SELECT id_abonne FROM abonne WHERE prenom ='Chloe') );
+
+*Quels sont les livres que Chloé n'a pas encore rendu ?
+$MariaDB [bibliothèque]> SELECT titre FROM livre WHERE id_livre IN (SELECT id_livre FROM emprunt WHERE id_abonne = (SELECT id_abonne FROM abonne WHERE prenom='Chloé') AND date_rendu IS NULL);
+
+*Qui a emprunté le plus de livres ?
+$MariaDB [bibliothèque]> SELECT prenom FROM abonne WHERE id_abonne = (SELECT id_abonne FROM emprunt GROUP BY id_abonne ORDER BY COUNT(id_abonne) DESC LIMIT 0,1);
+Décomposition de la requête ci-dessus:
+  $MariaDB [bibliothèque]> SELECT id_abonne, COUNT(id_abonne) FROM emprunt GROUP BY id_abonne ORDER BY COUNT(id_abonne) DESC LIMIT 0,1;
+  $MariaDB [bibliothèque]> SELECT id_abonne FROM emprunt GROUP BY id_abonne ORDER BY COUNT(id_abonne) DESC LIMIT 0,1;
+  $MariaDB [bibliothèque]> SELECT prenom FROM abonne WHERE id_abonne = ( SELECT id_abonne FROM emprunt GROUP BY id_abonne ORDER BY COUNT(id_abonne) DESC LIMIT 0,1);
+
+Autre forme de Jointure :
+  $MariaDB [bibliothèque]> SELECT a.prenom , e.date_sortie, e.date_rendu FROM abonne a, emprunt e WHERE a.id_abonne = e.id_abonne AND a.prenom = 'guillaume' ;
+
+  Effectuer cette requête à l'aide des requêtes imbriquée met en lumière les limites de celles-ci car il est difficile d'afficher des informations
+  venant de plusieurs tables.
+  MariaDB [bibliothèque]> SELECT date_sortie,date_rendu FROM emprunt WHERE id_abonne = ( SELECT id_abonne FROM abonne WHERE prenom='Guillaume');
+
+  MariaDB [bibliothèque]> SELECT e.date_sortie, e.date_rendu FROM emprunt e, livre l WHERE l.id_livre = e.id_livre AND l.auteur = 'ALPHONSE DAUDET';
+OU
+  MariaDB [bibliothèque]> SELECT date_sortie, date_rendu FROM emprunt WHERE id_livre IN ( SELECT id_livre FROM livre WHERE auteur='ALPHONSE DAUDET');
+
+Qui à emprunté le livre une vie sur l'année 2014
+  -Jointure:
+    SELECT a.prenom
+    FROM abonne a, emprunt e, livre l
+    WHERE l.id_livre = e.id_livre
+    AND e.id_abonne = a.id_abonne
+    AND e.date_sortie LIKE '2014%'
+    AND l.titre='Une vie';
+  -Requêtes inmbriquées:
+    SELECT prenom
+     FROM abonne
+      WHERE id_abonne IN (
+      SELECT id_abonne FROM emprunt
+      WHERE date_sortie LIKE '2014%'
+       AND id_livre = (
+        SELECT id_livre
+        FROM livre
+        WHERE titre = 'Une vie'));
+
+MariaDB [bibliothèque]> SELECT a.prenom, COUNT(e.id_livre) AS Nb_livres FROM abonne a, emprunt e WHERE a.id_abonne = e.id_abonne GROUP BY e.id_abonne;
+
+Trouver les livres à rendre :
+*MariaDB [bibliothèque]> SELECT a.prenom, COUNT(e.id_livre) AS Nb_livres_a_rendre
+  FROM abonne a,
+    emprunt e
+      WHERE a.id_abonne = e.id_abonne
+        AND e.date_rendu IS NULL
+          GROUP BY e.id_abonne;
+
+Qui à emprunté quoi et quand :
+MariaDB [bibliothèque]> SELECT a.prenom, e.date_sortie, l.titre
+    -> FROM abonne a, emprunt e, livre l
+    -> WHERE a.id_abonne = e.id_abonne
+    -> AND e.id_livre = l.id_livre
+    -> ;
+Qui à emprunté quoi quand, et quand l'a-t-il rendu :
+  MariaDB [bibliothèque]> SELECT a.prenom, e.date_sortie, e.date_rendu, l.titre
+        -> FROM abonne a, emprunt e, livre l
+        -> WHERE a.id_abonne = e.id_abonne
+        -> AND e.id_livre = l.id_livre
+        -> ORDER BY e.date_sortie;
+
+1-Afficher les prénoms des abonnés avec les numéros (id) des livres empruntés par jointure.
+    MariaDB [bibliothèque]> SELECT a.prenom, e.id_livre
+    -> FROM abonne a, emprunt e
+    -> WHERE a.id_abonne = e.id_abonne;
+2-Ajouter votre prénom dans la liste des abonnés. (sans livre emprunté)
+MariaDB [bibliothèque]> INSERT INTO abonne VALUES (NULL, 'Lounis');
+3-Refaire la requête.
+
+D'autre forme de jointure : LEFT JOIN / RIGHT JOIN / INNER JOIN
+
+Le nom des abonnés ayant emprunté/ ou pas un livre :
+
+MariaDB [bibliothèque]> SELECT a.prenom, e.id_livre
+    -> FROM abonne a
+    -> LEFT JOIN emprunt e ON a.id_abonne = e.id_abonne;
+
+Quel livre a été emprunté ou pas :
+    MariaDB [bibliothèque]> SELECT e.id_emprunt, l.id_livre
+        -> FROM emprunt e
+        -> RIGHT JOIN livre l ON l.id_livre = e.id_livre;
+
+Les parties communes :
+        MariaDB [bibliothèque]> SELECT e.id_emprunt, l.id_livre , a.prenom
+            -> FROM emprunt e
+            -> RIGHT JOIN livre l ON l.id_livre = e.id_livre
+            -> INNER JOIN abonne a ON e.id_abonne = a.id_abonne;
+
+            MariaDB [bibliothèque]> SELECT e.id_emprunt, l.id_livre, a.prenom
+                -> FROM emprunt e
+                -> RIGHT JOIN livre l ON l.id_livre = e.id_livre
+                -> LEFT JOIN abonne a ON e.id_abonne = a.id_abonne;
+
+
+
+/****************************************** UNION ****************************************/
+Liste de  tous les auteurs + abonnés en un seul enregistrement
+  $*SELECT auteur AS liste_personne FROM livre UNION SELECT prenom from abonne ;
+
+
+/**************************************** LES FONCTIONS ********************************/
+Séléctionner la database dans laquelle je suis situé:
+SELECT DATABASE();
+Changer de database :
+use database;
+Afficher la version :
+SELECT VERSION();
+Afficher les tables :
+SHOW TABLES;
+
+  -SELECT DATE_ADD('0000-00-00', INTERVAL 31 DAY);
+  -SELECT CURDATE();
+  -SELECT_LAST_INIT;
+  -SELECT CURTIME();
+  *Formattage de Date
+  MariaDB [bibliothèque]> select *, DATE_FORMAT (date_rendu, 'le %d %m %y') from emprunt;
+  MariaDB [bibliothèque]> select *, DATE_FORMAT( date_rendu, 'le %d/%m/%Y') AS date_formatee from emprunt;
+
+  -SELECT DAYNAME('');
+
+  -SELECT NOW();
+
+  -SELECT PASSWORD ('mon_super_code_secret');
+
+  -SELECT DATE_FORMAT(CURDATE(), '%Y');
+
+  -SELECT LOCATE('-','Marie-Pierre');
+  -SELECT LOCATE ('@','nom.prenom@gmail.com');
+
+  -SELECT REPLACE ('www.webforce3.com','w','W');
+  -SELECT SUBSTRING('bonjour',4);
+  -SELECT SUBSTRING('nom.prenom@gmail.com',1,LOCATE('@','nom.prenom@gmail.com')-1);
+  -SELECT TRIM('');
+  -SELECT UPPER('');
+  -SELECT FOUND_ROWS();
+
+
+
+Création d'une fonction hors mysql :
+MariaDB [(none)]> use entreprise
+Database changed
+MariaDB [entreprise]> SHOW FUNCTION STATUS;
+Empty set (0.00 sec)
+
+MariaDB [entreprise]> DELIMITER $
+MariaDB [entreprise]> CREATE FUNCTION calcul_tva(nb INT, taux FLOAT) RETURNS TEXT
+    -> COMMENT 'Fonction calculant la tva'
+    -> READS SQL DATA -> fonction de lecture : select,fetch
+    -> BEGIN
+    -> RETURN CONCAT_WS(': ','le resultat est ', ROUND( (nb*taux),2));
+    -> END $
+
+    MariaDB [entreprise]> DELIMITER ;
+    MariaDB [entreprise]> SHOW FUNCTION STATUS;
+
+    MariaDB [entreprise]> SELECT calcul_tva(100,1.055);
+
+READS SQL DATA -> fonction de lecture : select,fetch
+MODIFIES SQL DATA -> Fonctions d'écriture (INSERT, UPDATE, DELETE)
+CONTAINS SQL -> Indique que la fonction ne fait ni lecture ni écriture
+NO SQL -> aucune instruction SQL
+DELIMITER -> permet de définir un nouveau délimiteur
+
+Utiliser une fonction pour créer un nouvel index:
+MariaDB [entreprise]> SELECT prenom, salaire, salaire_brut_en_net(salaire) FROM employes2 ;
+
+
+//************************ TABLES VIRTUELLES / VIEW ****************///
+Comment créer une vue :
+ CREATE VIEW vue_homme AS SELECT prenom,nom,sexe,service FROM employes2 WHERE sexe='m';
+ l'avantage d'une vue: ce n'est pas une vraie table, mais je peux effectuer des requêtes dessus.
+
+ MariaDB [bibliothèque]> CREATE VIEW vue_emprunt AS
+     -> SELECT a.prenom, l.titre, e.date_sortie
+     -> FROM abonne a, livre l, emprunt e
+     -> WHERE a.id_abonne = e.id_abonne
+     -> AND l.id_livre = e.id_livre
+- Nous sauvegardons uniquement la requête permettant de mener aux résultats.
+
+- Une table virtuelle est une table qui se construit à partir d'une autre; Habituellement pour créer une table nous avions besoin de "CREATE TABLE...", une table virtuelle se construit à partir d'une requête et de colonnes de tables existantes.
+
+- Une table virtuelle est pratique pour isoler des résultats suite à une jointure compliquée, cela permettra de faire des requêtes plus simples directement sur les résultats de la jointure.
+
+- Une table virtuelle est constamment à jour et possède les mêmes données que la table d'origine puisqu'elle garde seulement la requête en mémoire. (Par conséquent, si je change un enregistrement dans la table virtuelle, ça change également dans la table d'origine, et vice-versa).
+
+//**************************** TABLES TEMPORAIRES *****************************//
+
+Créer une table temporaire :
+MariaDB [entreprise]> CREATE TEMPORARY TABLE commerciaux AS SELECT * FROM employes2 WHERE service='commercial';
+
+MariaDB [bibliothèque]> CREATE TEMPORARY TABLE emprunt_2014 AS SELECT * FROM emprunt WHERE date_sortie LIKE '2014%';
+
+- Une table temporaire se construit à partir d'une requête et ré-enregistre des données existantes à un instant T.
+
+- il peut être utile de l'utiliser pour créer un sous-ensemble d'une autre table plus léger afin de soulager le serveur.
+
+- une table temporaire peut permettre de masquer certains aspects du schéma (confidentialité) ou d'en changer la complexité en ne montrant que certaines colonnes
+
+- une table temporaire possède ses propres données (si je modifie la table temporaire, ça ne changera pas la table d'origine qui a "servi" à la construire, et vice-versa)
+
+- une table temporaire est supprimée automatiquement lorsque l'on ferme la console (durée de vie liée à la session en cours)
+
+
+//***************************************** TRANSACTION/ROLLBACK *****************//
+
+Etablir une TRANSACTION :
+  START TRANSACTION;
+  UPDATE abonne SET prenom='Laurent' WHERE id_abonne=5;
+  ROLLBACK;
+    OU
+  COMMIT;
+
+  START TRANSACTION permet de démarrer une zone de requête sous réserve de confirmation / annulation.
+
+  Si nous souhaitons annuler nos requêtes, il nous suffira d'inscrire : ROLLBACK;
+
+  Au contraire, si nous souhaitons confirmer nos requêtes, il nous faudra inscrire : COMMIT;
+
+  Que l'on choisisse ROLLBACK ou COMMIT, cela TERMINE la transaction, ça veut dire que les prochaines requêtes ne pourront pas être annulées, à moins de remettre un START TRANSACTION.
+
+  -> Avec points de sauvegarde (de reprise)
+  START TRANSACTION;
+  ....
+  SAVEPOINT nom_point_de_sauvegard_1
+  ....
+  SAVEPOINT nom_point_de_sauvegard_2
+  ....
+  SAVEPOINT nom_point_de_sauvegard_3
+  ROLLBACK TO SAVEPOINT nom_point_de_sauvegard_* => annule les opérations qui se situent après le point de sauvegarde. auto clear des points de sauvegarde.
+
+  //********************************************************************************//
+
+# mysqldump -u root entreprise > save_entreprise.sql
+Permet de créer une sauvegarde .sql (back up) export
+
+# mysqldump -u root entreprise < save_entreprise.sql
+import en ligne de commande.
+
+
+//** **************************************** CONTRAINTES *************************************//
+
+ALTER TABLE artcile
+  ADD CONSTRAINT article_ibfk_1 FOREIGN KEY (id_fourn) REFERENCES fournisseur (id_fournisseur);
+
+  Ici on ajoute une contrainte sur la table artcile qui relie le champ 'id_fourn' au champ 'id_fournisseur' de la table fournisseur;
+
+(nota : le type de table doit être innoDB)
+
+ALTER TABLE artcile
+  ADD CONSTRAINT article_ibfk_1 FOREIGN KEY (id_fourn) REFERENCES
+  fournisseur (id_fournisseur) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+  - ON DELETE => ce qui se passe si on tente de supprimer l'enregistrement de la table fournisseur
+  - ON UPDATE => ce qui se passe si on tente de modifier le champ id_fournisseur de la table fournisseur
+
+  RESTRICT
+  NO ACTION
+  => Dans l'absolu ces 2 termes font la même chose : interdire l'opération.
+  La nuance, c'est que RESTRICT fait en l'opération puis la restare.
+  Dans certains cas, il est possible de s'intercaler entre le moment où l'opération (delete ou update) est faite et où elle est restaurée.
+  Exeloke : log sur les tentatives de suppression.
+
+  CASCADE
+  Répercuter l'opération (delete ou update) sur la tablde article dèsque je supprime une fournisseur de la table fournisseur. /!\ CASCADE sur un DELETE efface tous les articles du fournisseur supprimé.
+
+  SET NULL
+  fonctionne uniquement sur les champs pour lesquels NULL est autorisé.
+  Si je supprime un fournisseur en ayant fixé ON DELETE SET NULL, tous les articles qui pointeront sur ce  fournisseur verrront leur champ id_fourn changé à la valeur NULL.
+
+  /*------------------------------------------------------------------------*////
+
+  1. La société de Taxis aimerait que l'on ne puisse pas faire de mauvaise association lors de la saisie.
+  exemple : conducteur  50 avec le véhicule 900 car ni l'un ni l'autre n'existent.
+
+  2. Losque la société de Taxis modifie l'id d'un conducteur, elle aimerait que cela soit répercuté dans la
+  table d'association.
+
+  3. La société aimerait qu'on l'on ne puisse pas supprimer un conducteur tant que celui ci conduit un véhicule.
+
+  4. Lorsque la société de Taxis modifie l'id d'un véhicul, elle aimerait que cela soit repercuté dans la table d'association.
+
+  5.Lorsque la société supprime un conducteur, elle aimerait garder la présence de l'association pour réaffecter un conducteur à un véhicule.
+/**********************************************************************************************/
+
+6. Qui (nom, prenom) conduit la voiture portant l'id 503 ? (2 methodes attendues)
+SELECT nom, prenom FROM conducteur WHERE id_conducteur ) (SELECT id_conducteur FROM associatio_vehicule_conducteur WHERE id_vehicule=503);
+
+OU
+
+SELECT c.nom, c.prenom FROM conducteur c, association_vehicule_conducteur avc WHERE avc.id_conducteur = c.id_conducteur AND avc.id_vehicule =503;
+
+7. Qui conduit quoi ?
+SELECT c.nom, c.prenom, v.marque, v.modele FROM conducteur c, vehicule v, association_vehicule_conducteur avc WHERE c.d_conducteur = avc.id_conducteur AND v.id_vehicule = avc.id_vehicule;
+
+8. Ajouter vous dans la liste des conducteur
+INSERT INTO conducteur VALUES (NULL,'Djadel','Lounis');
+9. Afficher tous les conducteurs asssociés à leur conducteur, même les véhicules sans conducteur.
+SELECT c.prenom, c.nom, a.id_vehicule FROM conducteur c LEFT JOIN association_vehicule_conducteur a ON c.id_conducteur = a.id_conducteur ;
+
+
+Pour aller plus loin
+SELECT v.marque, v.model, c.prenom, c.nom FROM conducteur c  LEFT JOIN association_vehicule_conducteur avc ON c.id_conducteur
+10. Ajouter un véhicule
+ INSERT INTO vehicule VALUES (NULL,'Mazda','fkvc','rouge','DD-888-DD');
+
+11. Afficher tous les véhicules associés à leur conducteur, même les véhicules sans conducteur.
+SELECT v.modele, v.marque, a.id_conducteur FROM vehicule v LEFT JOIN association_vehicule_conducteur a ON v.id_vehicule = a.id_vehicule ;
+
+12. Afficher les résultats de la question 9 et de la question 11 en une seul requête.
+SELECT v.marque, v.modele, c.prenom, c.nom 
+FROM conducteur c
+LEFT JOIN association_vehicule_conducteur avc ON c.id_conducteur = avc.id_conducteur
+LEFT JOIN vehicule v ON v.id_vehicule = avc.id_vehicule
+UNION
+SELECT v.marque, v.modele, c.prenom, c.nom
+FROM conducteur c
+RIGHT JOIN association_vehicule_conducteur avc ON c.id_conducteur = avc.id_conducteur
+RIGHT JOIN vehicule v ON v.id_vehicule = avc.id_vehicule
