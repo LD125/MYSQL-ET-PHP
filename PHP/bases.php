@@ -2,7 +2,7 @@
 <html>
     <meta charset="utf-8">
     <title>Bases du PHP </title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <h2>Bases du PHP</h2>
@@ -369,6 +369,213 @@ for ( $j=0 ; $j <=10 ; $j++)
 
 ?>
 <br>
+
+<!-- Exercice : afficher une liste de slection allant de l'année 2017 à 1950 -->
+<?php 
+    echo '<select>';
+        for ( $i=date('Y') ; $i >= 1950 ; $i--)
+        {
+            echo "<option>$i</option>";
+        }
+    echo '</select>';
+?>
+
+<!--Correction -->
+<label for"annee">Annee</label><select name="annee">
+<?php for ( $a=date('Y'); $a >= 1950; $a-- ) : ?>
+        <option value="<?= $a ?>"><?= $a ?></option>
+    <?php endfor; ?>
+        </select>
+<!--Exercie : boucles imbriquées, générer un tableau de 15 par 20, 15 colonnes, 20 lignes -->
+<table>
+    <?php
+    $compteur=0;
+     for($ligne=1; $ligne <= 12; $ligne++) {
+        echo '<tr>';
+        for ($colonne=1 ; $colonne <=30 ; $colonne++)
+        {   
+            $compteur++;
+            echo '<td>' .$compteur .'</td>';
+        }
+        echo '</tr>';
+    } 
+    ?>
+</table>
+
+<table>
+    <?php
+    $compteur=0;
+    for($ligne=1; $ligne<=12; $ligne++) :?>
+    <tr>
+    <?php
+    for ($colonne=1 ; $colonne <=30; $colonne++) :
+        $compteur++;
+        ?>
+        <td><?= $compteur ?></td>
+        <?php
+    endfor; ?>
+    </tr>
+    <?php
+    endfor;
+    ?>
+ </table>
+
+<?php 
+
+echo "<h2>Inclusion de fichier</h2>";
+
+echo "premiere fois<br>";
+include('exemple.php');
+echo"<br>";
+
+mafonction();
+/*
+echo "deuxième fois<br>";
+include_once('exemple.php'); 
+echo"<br>";
+
+echo "troisième fois<br>";
+require('exemple.php');
+echo '<br>';
+
+echo "quatrième fois<br>";
+require_once('exemple.php');
+echo '<br>';
+*/
+
+echo '<h2>Tableaux de données: ARRAY</h2>';
+
+$liste = array('Ruben','Hamid','Moundir','Olivier','Romain','Chloe');
+
+vdm($liste);
+
+$fruits = array();
+$fruits[] = 'pomme';
+$fruits[] = 'poire';
+$fruits[] = 'orange';
+
+vdm($fruits);
+
+$fruits2 = array( 'pm' => 'pomme', 'pr' => 'poire', 'og' => 'orange');
+vdm($fruits2);
+
+$fruits2[] = 'cerise';
+$fruits2['bn'] = 'banane';
+vdm($fruits2);
+
+$fruits2['pm'] = 'pêche';
+vdm($fruits2);
+
+$fruits2[]='kiwi';
+vdm($fruits2);
+
+$fruits2[99]='clémentine';
+$fruits2[]= 'raisin';
+vdm($fruits2);
+
+
+// Boucle foreach
+foreach( $fruits2 as $info)
+{
+    echo $info.'-';
+}
+
+foreach( $fruits2 as $indice => $valeur)
+{
+    echo "à l'indice $indice je trouve $valeur<br>";
+}
+
+// syntaxe : foreach ( nomtableauaparcourir as index => valeur)
+$tsuperheros = array (
+     'Superman' => array(
+                    "nom" => "kent",
+                    "prenom" => "clark", 
+                    "univers" => "DC Comics"),
+     'Spiderman' => array(
+                    "nom" => "parker",
+                    "prenom" => "peter", 
+                    "univers" => "Marvel"),
+     'Batman' => array(
+                    "nom" => "wayne",
+                    "prenom" => "bruce", 
+                    "univers" => "DC Comics"),
+    
+     'Ironman' => array(
+                    "nom" => "stark",
+                    "prenom" => "tony", 
+                    "univers" => "Marvel"),
+    );
+echo '<hr>';
+echo sizeof($tsuperheros);
+echo '<br>';    
+echo count($tsuperheros);
+// count() et sizeof() indiquent tous deux le nombre d'entrées dans le tableau
+echo '<br>'; 
+echo $tsuperheros['Batman']['prenom'];
+echo '<br>'; 
+echo $tsuperheros['Spiderman']['univers'];
+
+foreach($tsuperheros as $heros => $valeur)
+{
+    echo '<p>'.$heros.'</p>';
+    foreach($valeur as $info => $valeur2){
+            echo $valeur2;        
+    }
+}
+echo '<br>'; 
+
+$fruits3 = array ('pomme','cerise','orange');
+
+$nbelemnts = count($fruits3);
+
+for ( $i=0; $i < $nbelemnts; $i++)
+{
+    echo $fruits3[$i].'-';
+}
+
+echo "<h2>Objets</h2>";
+
+class Etudiant
+{
+    public $prenom = 'Julien';
+    public $age = 25;
+    public function pays(){
+        return 'France';
+    }
+}
+$objet = new Etudiant;
+vdm($objet);
+vdm(get_class_methods($objet));
+echo $objet->age;
+echo '<br>'; 
+echo $objet->pays();
+$objet->prenom = 'Jeanne';
+vdm($objet);
+$objet2 = new Etudiant;
+vdm($objet2);
+
+foreach ( $objet2 as $valeur ){
+    echo $valeur;
+}
+
+?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <?= 'allo' ?> <!-- revient à < ? php echo -->
 </body>
 </html>

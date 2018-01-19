@@ -1,0 +1,15 @@
+h2 {
+    margin: 0;
+    font-size: 15px;
+    color: red;
+}
+td {
+    border: 1px solid black;
+}
+.moitie{
+    width: 49%;
+    border: 1px solid black;
+    color: blue;
+    background: yellow; 
+    float: left;
+}
