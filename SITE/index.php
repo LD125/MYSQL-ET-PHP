@@ -5,7 +5,7 @@ require_once('inc/haut.php');
 
 // Génération des catégories pour alimenter le contenu gauche
 
-//  Affichage des produits pour alimenter le contenu droite en tenant compte d'un eventuel choix de categorie
+// Affichage des produits pour alimenter le contenu droite en tenant compte d'un eventuel choix de categorie
 
 ?>
 <div class="row">
@@ -17,10 +17,6 @@ require_once('inc/haut.php');
             <?= $contenu_droite ?>
         </div>
     </div>
-
 </div>
-
 <?php
 require_once('inc/bas.php');
-
-?>
