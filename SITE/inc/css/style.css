@@ -21,3 +21,23 @@ footer {
     min-height: 80vh;
 
 }
+table {
+    background: lightgreen;
+    width: 90%;
+    -webkit-box-shadow: 0px 0px 5px 3px rgba(0,0,0,0.15);
+-moz-box-shadow: 0px 0px 5px 3px rgba(0,0,0,0.15);
+box-shadow: 0px 0px 5px 3px rgba(0,0,0,0.15);
+}
+
+table th {
+    text-align: center;
+    margin-right: 1%;
+    text-decoration: underline;
+    font-size: 1.7rem;
+
+    
+}
+table td:hover{
+    background: yellow;
+    zoom: 120%;
+}

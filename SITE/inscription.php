@@ -34,12 +34,31 @@ if ( $_POST ){
         - ^ signifie "commence par tout ce qui suit"
         - $ signifie "finit par tout ce qui précède"
         - [] pour délimiter les intervalles ( ici de a à z, de A à Z, de 0 à 9, et on ajoute ".", "_" ou "-")
-        - le + pour dire que les caractères sont acceptés de 0 à x fois
+        - le + pour dire que la chaine de caractères peut aller de de 1 à n caractères
     */
-
-
+    if (!$verif_caractere){
+        $contenu .= '<div class="alert alert-danger">Le pseudo doit contenir 3 à 15 caractères (lettre de a à Z chiffres de 0 à 9, _.-)</div>';
+    }
+    if ( !$verif_codepostal){
+        $contenu .= '<div class="alert alert-danger">Le code postal n\'est pas correct</div>';
+    }
+    if ( $_POST['civilite'] !='m' && $_POST['civilite'] !='f')
+    {
+        $contenu .= '<div class="alert alert-danger">De quel genre êtes vous ?</div>';
+    }
  
 
+    $membre = executeRequete("SELECT * FROM membre WHERE pseudo = :pseudo", array('pseudo' => $_POST['pseudo']));
+    if ( $membre->rowCount() > 0)
+    {
+        $contenu .= '<div class="alert alert-danger">Pseudo indisponible, merci d\'en choisir un autre</div>';
+    }
+
+    // astuce de control d'EMAIL avec filter_var
+    if( !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) )
+    {
+        $contenu .= '<div class="alert alert-danger">Adresse mail invalide</div>';
+    }
     // si tout va bien
     // je controle que le pseudo n'existe pas déjà dans la table
     // sinon j'invite l'internaute à changer de pseudo
@@ -47,6 +66,15 @@ if ( $_POST ){
     // Si tout va bien
     // j'insère le nouveau membre dans la table membre  (avec statut = 0)
     // je mets $inscription à true
+
+    if( empty($contenu) )
+    { 
+        executeRequete("INSERT INTO membre VALUES ( NULL,:pseudo,:mdp,:nom,:prenom,:email,:civilite,:ville,:code_postal,:adresse,0)",
+            array('pseudo' => $_POST['pseudo'], 'mdp' => MD5($_POST['mdp']), 'nom' => $_POST['nom'],  'prenom' => $_POST['prenom'], 'email' => $_POST['email'], 'civilite' => $_POST['civilite'], 'ville' => $_POST['ville'], 'code_postal' => $_POST['code_postal'], 'adresse' => $_POST['adresse'] ));
+    
+        $contenu .='<div class="alert alert-success">Vous êtes inscrit à notre site. <a href="connexion.php">Cliquer ici pour vous connecter</a></div>';
+        $inscription = true;    
+    }
 
 }
 require_once('inc/haut.php');

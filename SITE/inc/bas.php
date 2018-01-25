@@ -3,7 +3,7 @@
     <footer>
         <div class="row">
             <div class="col-md-12 text-center">
-            <p>&copy; Copyright 2018 - Fredo Fringues - Tous droits réservés</p>
+            <p>&copy; Copyright 2018 - e Boutique - Tous droits réservés</p>
             </div>
         </div>
     </footer>

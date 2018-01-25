@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Fredo Fringues</title>
+    <title>e boutique</title>
     <!-- liens css -->
     <link rel="stylesheet" href="<?= RACINE_SITE.'inc/css/bootstrap.min.css' ?>">
     <link rel="stylesheet" href="<?= RACINE_SITE.'inc/css/style.css' ?>">
@@ -19,7 +19,7 @@
                         <span class="sr-only">Naviguer</span>
                         <span class="glyphicon glyphicon-menu-hamburger"></span>
                     </button>
-                    <a class="navbar-brand" href="<?= RACINE_SITE ?>">Fredo Fringues</a>
+                    <a class="navbar-brand" href="<?= RACINE_SITE ?>">e boutique</a>
                 </div>
                 <div class="collapse navbar-collapse" id="monmenu">
                     <ul class="nav navbar-nav">
