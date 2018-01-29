@@ -7,12 +7,66 @@ if ( !estConnecteEtAdmin() )
     header('location:../connexion.php'); // si pas admin, ouste ! va voir la page connexion si j'y suis
     exit();
 }
+// suppression
+if ( isset($_GET['action']) && $_GET['action']=='suppression' && isset($_GET['id_produit'])) /// selection de l'action
+{
+    $resul = executeRequete("SELECT photo FROM produit WHERE id_produit= :id_produit",array('id_produit' => $_GET['id_produit'])); // selection du fichier
+    $photo_a_supprimer = $resul->fetch(PDO::FETCH_ASSOC);
+    $chemin_photo = $_SERVER['DOCUMENT_ROOT'].$photo_a_supprimer['photo'];
+    
+    if( !empty($photo_a_supprimer['photo']) && file_exists($chemin_photo)){ // suppression 
+        unlink($chemin_photo);
+    }
+    executeRequete("DELETE FROM produit WHERE id_produit=:id_produit",array('id_produit' => $_GET['id_produit']));
+    $contenu .='<div class="alert alert-success">Le produit a été supprimé</div>';
+    $_GET['action']='affichage';
+}
 
+
+
+// Onglets affichage ajout/modif
 $contenu .='<ul class="nav nav-tabs">
                 <li><a href="?action=affichage">Affichage des produits</a></li>
                 <li><a href="?action=ajout">Ajouter un produit</a></li>
             </ul>';
 
+//  Enregistrement du produit en BDD
+if ( $_POST ){
+
+    $photo_bdd='';
+if ( isset($_POST['photo_actuelle']))
+{
+    $photo_bdd=$_POST['photo_actuelle'];
+} 
+
+if ( !empty($_FILES['photo']['name']))
+{
+    $nom_photo = $_POST['reference'].'-'.$_FILES['photo']['name'];
+    $photo_bdd = RACINE_SITE.'photo/'.$nom_photo;
+    $photo_dossier= $_SERVER['DOCUMENT_ROOT'].$photo_bdd;
+
+    copy($_FILES['photo']['tmp_name'], $photo_dossier);
+}
+
+// On enregistre le produit dans la BDD
+executeRequete("REPLACE INTO produit VALUES (:id_produit,:reference,:categorie,:titre,:description,:couleur,:taille,:public,:photo,:prix,:stock)",
+array ( 'id_produit' => $_POST['id_produit'],
+        'reference'  => $_POST['reference'],
+        'categorie'  => $_POST['categorie'],
+        'titre'      => $_POST['titre'],
+        'description'=> $_POST['description'],
+        'couleur'    => $_POST['couleur'],
+        'taille'     => $_POST['taille'],
+        'public'     => $_POST['public'],
+        'photo'      => $photo_bdd,
+        'prix'       => $_POST['prix'],
+        'stock'      => $_POST['stock'],
+
+));
+$contenu .='<div class="alert alert-success">Le produit a été enregistré</div>';
+$_GET['action'] = 'affichage';
+
+}
 
 
 
@@ -41,9 +95,12 @@ $contenu .="</tr>";
 while ( $ligne = $resul->fetch(PDO::FETCH_ASSOC) )
 {
     $contenu .='<tr>';
-
     foreach($ligne as $indice => $information)
     {
+        if ( ($indice=='photo') && $information != '')
+        {
+            $information = '<img class="img-thumbnail" src="'.$information.'" alt="'.$ligne['titre'].'">';
+        }
         $contenu .='<td class="text-center">'.$information.'</td>';
     }
     $contenu .='<td><a href="?action=modifier&id_produit='.$ligne['id_produit'].$ligne['titre'].' ?\'))">Modifier</a></td>';
@@ -72,7 +129,7 @@ if ( isset($_GET['action']) && ( $_GET['action']=='ajout' || $_GET['action']=='m
 
 ?>
 <h3> Formulaire d'ajout ou de modification d'un produit</h3>
-<form method="post" action="" enctype="multipart/form-data">
+<form method="post" action="" enctype="multipart/form-data" class="col-md-8">
     <input class="form-control" type="hidden" id="id_produit" name="id_produit" value="<?= $produit_actuel['id_produit'] ?? 0 ?>">
 
     <label for="reference">Reference</label>
@@ -84,7 +141,7 @@ if ( isset($_GET['action']) && ( $_GET['action']=='ajout' || $_GET['action']=='m
     <br>
 
     <label for="titre">Titre</label>
-    <input class="form-control" type="text" name="couleur" id="couleur" value="<?= $produit_actuel['couleur'] ?? '' ?>">
+    <input class="form-control" type="text" name="titre" id="titre" value="<?= $produit_actuel['titre'] ?? '' ?>">
     <br>
 
     <label for="description">Description</label>
@@ -98,15 +155,27 @@ if ( isset($_GET['action']) && ( $_GET['action']=='ajout' || $_GET['action']=='m
     <label for="taille">Taille</label>
     <select name="taille">
         <option <?= (isset($produit_actuel['taille']) && $produit_actuel['taille']=='S') ? 'selected' : ''?> value="S">S</option>
-        <option <?= (isset($produit_actuel['taille']) && $produit_actuel['taille']=='S') ? 'selected' : ''?> value="M">M</option>
-        <option <?= (isset($produit_actuel['taille']) && $produit_actuel['taille']=='S') ? 'selected' : ''?> value="L">L</option>
-        <option <?= (isset($produit_actuel['taille']) && $produit_actuel['taille']=='S') ? 'selected' : ''?> value="XL">XL</option>
+        <option <?= (isset($produit_actuel['taille']) && $produit_actuel['taille']=='M') ? 'selected' : ''?> value="M">M</option>
+        <option <?= (isset($produit_actuel['taille']) && $produit_actuel['taille']=='L') ? 'selected' : ''?> value="L">L</option>
+        <option <?= (isset($produit_actuel['taille']) && $produit_actuel['taille']=='XL') ? 'selected' : ''?> value="XL">XL</option>
     </select>
     <br>
     <!-- public : m,f mixte -->
     <label for="photo">Photo</label>
     <input type="file" name="photo" id="photo">
+    <?php 
+        if ( isset($produit_actuel['photo']))
+        {
+            echo '<p>Vous pouvez uploader une nouvelle photo </p>';
+            echo '<img class="img-thumbnail" src="'.$produit_actuel['photo'].'" alt="'.$produit_actuel['titre'].'">';
+            echo '<input type="hidden" name="photo_actuelle" value="'.$produit_actuel['photo'].'">';
+            // cet input permet de remplir $_POST sur un indice "photo_actuelle" la valeur de l'url de la photo stockée en base. Ainsi, si on ne
+            // charge pas de nouvelle photo, l'url actuelle sera remise en base
+        }
 
+    ?>
+
+    <br>
     <label for="public">Public</label>
     <select name="public">
         <option <?= (isset($produit_actuel['taille']) && $produit_actuel['taille']=='m') ? 'selected' : ''?> value="m">m</option>

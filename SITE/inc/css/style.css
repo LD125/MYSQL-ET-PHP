@@ -1,7 +1,7 @@
 body {
 
     padding-top:  70px;
-
+    background-image: url(../../photo/ocean.jpg);
 }
 
 footer {
@@ -17,27 +17,57 @@ footer {
 }
 
 .main {
-
     min-height: 80vh;
+    color: aliceblue;
 
 }
 table {
-    background: lightgreen;
     width: 90%;
     -webkit-box-shadow: 0px 0px 5px 3px rgba(0,0,0,0.15);
 -moz-box-shadow: 0px 0px 5px 3px rgba(0,0,0,0.15);
 box-shadow: 0px 0px 5px 3px rgba(0,0,0,0.15);
+    border : 10px solid black;
 }
 
 table th {
+    background-image: url(../../photo/wild-sea.png);
     text-align: center;
     margin-right: 1%;
     text-decoration: underline;
     font-size: 1.7rem;
-
-    
+    padding : 0.5%;
+}
+table td {
+    background: lightgrey;
+    color: black;
+    border: 1px solid black;
 }
 table td:hover{
-    background: yellow;
-    zoom: 120%;
+    background: rgb(206, 127, 0);
+}
+
+form {
+    border: 10px solid black;
+    padding: 1%;
+    background-image: url(../../photo/wild-sea.png);
+    -webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.13);
+-moz-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.13);
+box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.50);
+    font-size: 1.5rem;
+}
+.img-thumbnail {
+    width : 100px;
+    height: auto;
+}
+
+footer {
+    color : #fff;
+}
+
+.hauteur {
+    min-height: 50vh;
+}
+
+.thumbnail {
+    border-radius: 0;
 }

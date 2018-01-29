@@ -54,7 +54,7 @@ if ( $_POST ){
         $contenu .= '<div class="alert alert-danger">Pseudo indisponible, merci d\'en choisir un autre</div>';
     }
 
-    // astuce de control d'EMAIL avec filter_var
+    // astuce de controle d'EMAIL avec filter_var
     if( !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) )
     {
         $contenu .= '<div class="alert alert-danger">Adresse mail invalide</div>';
