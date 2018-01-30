@@ -12,12 +12,12 @@ $categories = executeRequete("SELECT DISTINCT categorie FROM produit ORDER BY ca
 
 $contenu_gauche .='<p class="lead">Catégories</p>
 <div class="list-group">
-<a href="?categorie=all" class="list-group-item">Toutes</a>';
+<a href="?categorie=all" class="list-group-item '.(!isset($_GET['categorie']) || (isset($_GET['categorie']) && $_GET['categorie']=='all') ? 'active' : '').'">Toutes</a>';
 
 while ( $cat = $categories->fetch(PDO::FETCH_ASSOC))
 {
     $contenu_gauche .='<a href="?categorie='.$cat['categorie'].'"
-    class="list-group-item">'.strtoupper($cat['categorie']).'</a>';
+    class="list-group-item '.(isset($_GET['categorie']) && ($_GET['categorie']==$cat['categorie']) ? 'active' : '').'">'.strtoupper($cat['categorie']).'</a>';
 }
 
 $contenu_gauche .= '</div>';
@@ -32,11 +32,12 @@ $couleurs = executeRequete("SELECT DISTINCT couleur FROM produit ORDER BY couleu
 
 $contenu_gauche .='<p class="lead">Couleurs</p>
 <div class="list-group">
-<a href="?couleur=all" class="list-group-item">Toutes</a>';
+<a href="?couleur=all" class="list-group-item '.(!isset($_GET['couleur']) || (isset($_GET['couleur']) && $_GET['couleur']=='all') ? 'active' : '').'">Toutes</a>';
 
 while ( $color = $couleurs->fetch(PDO::FETCH_ASSOC) )
 {
-    $contenu_gauche .='<a href="?couleur='.$color['couleur'].'" class="list-group-item">'.ucfirst($color['couleur']).'</a>';
+    $contenu_gauche .='<a href="?couleur='.$color['couleur'].'"
+    class="list-group-item '.(isset($_GET['couleur']) && ($_GET['couleur']==$color['couleur']) ? 'active' : '').'">'.ucfirst($color['couleur']).'</a>';
 }
 
 $contenu_gauche .= '</div>';
@@ -74,13 +75,13 @@ while ( $produit = $donnees->fetch(PDO::FETCH_ASSOC))
     //echo "<hr>";
     $contenu_droite .='<div class="col-sm-4 hauteur">
                             <div class="thumbnail">
-                                <a href="fiche_produit.php?
-                                id_produit='.$produit['id_produit'].'">
+                                <a href="fiche_produit.php?id_produit='.$produit['id_produit'].'">
                                 <img src="'.$produit['photo'].'"
                                 class="img-responsive"></a>
                                 <div class="caption">
                                     <h4 class"pull-right">'.$produit['prix'].'€</h4>
-                                    <h4><a href="fiche_produit.php?">'.$produit['titre'].'</a></h4>
+                                    <h4><a href="fiche_produit.php?id_produit='.$produit['id_produit'].'">
+                                    '.$produit['titre'].'</a></h4>
                                     <p>'.$produit['description'].'</p>
                                 </div>
                             </div>

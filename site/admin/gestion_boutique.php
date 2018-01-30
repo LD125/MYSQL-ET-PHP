@@ -1,12 +1,23 @@
 <?php 
 
+///////////////////////////////////////////// SECTION INIT /////////////////////////////////////////////////////
+
+
+
 require_once('../inc/init.php');
+
+
 
 if ( !estConnecteEtAdmin() )
 {
     header('location:../connexion.php'); // si pas admin, ouste ! va voir la page connexion si j'y suis
     exit();
 }
+
+
+
+///////////////////////////////////////////// SECTION TRAITEMENTS (suppression/insertion/update) ///////////////////////////
+
 // suppression
 if ( isset($_GET['action']) && $_GET['action']=='suppression' && isset($_GET['id_produit'])) /// selection de l'action
 {
@@ -70,7 +81,7 @@ $_GET['action'] = 'affichage';
 
 
 
-
+////////////////////////////////////////// PREPARATION DE L AFFICHAGE////////////////////////
 
 
 
@@ -110,6 +121,10 @@ while ( $ligne = $resul->fetch(PDO::FETCH_ASSOC) )
     $contenu .= "</table>";
 
 }
+
+
+/////////////////////////////////////// SECTION AFFICHAGE////////////////////////////////////////////////
+
 require_once('../inc/haut.php');
 echo $contenu;
 
@@ -128,6 +143,8 @@ if ( isset($_GET['action']) && ( $_GET['action']=='ajout' || $_GET['action']=='m
     }
 
 ?>
+<!------------------------------------------- SECTION FORMULAIRE--------------------------------------------------- -->
+
 <h3> Formulaire d'ajout ou de modification d'un produit</h3>
 <form method="post" action="" enctype="multipart/form-data" class="col-md-8">
     <input class="form-control" type="hidden" id="id_produit" name="id_produit" value="<?= $produit_actuel['id_produit'] ?? 0 ?>">

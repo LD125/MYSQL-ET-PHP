@@ -18,7 +18,10 @@ footer {
 
 .main {
     min-height: 80vh;
-    color: aliceblue;
+    color: aliceblue;   
+    padding: 2%;
+    border: 10px solid black;
+    background-image: url(../../photo/shattered-island.gif);
 
 }
 table {
@@ -30,7 +33,7 @@ box-shadow: 0px 0px 5px 3px rgba(0,0,0,0.15);
 }
 
 table th {
-    background-image: url(../../photo/wild-sea.png);
+    background-image: url(../../photo/shattered-island.gif);
     text-align: center;
     margin-right: 1%;
     text-decoration: underline;
@@ -49,15 +52,17 @@ table td:hover{
 form {
     border: 10px solid black;
     padding: 1%;
-    background-image: url(../../photo/wild-sea.png);
+    background-image: url(../../photo/shattered-island.gif);
     -webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.13);
 -moz-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.13);
 box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.50);
     font-size: 1.5rem;
+    color: #000;
 }
 .img-thumbnail {
     width : 100px;
-    height: auto;
+    height: auto;   
+    
 }
 
 footer {
@@ -70,4 +75,24 @@ footer {
 
 .thumbnail {
     border-radius: 0;
+    -webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.13);
+    -moz-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.13);
+    box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.50);
+}
+
+.suggimg:hover {
+    zoom: 1.5; 
+}   
+
+.descri {
+    background-color: dodgerblue;
+    border : 10px solid white;
+    -webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.13);
+    -moz-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.13);
+    box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.50);
+    background-image: url(../../photo/shattered-island.gif);
+    
+}
+.h4ajout {
+    color : #000;
 }
