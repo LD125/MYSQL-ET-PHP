@@ -80,7 +80,7 @@ while ( $ligne = $resul->fetch(PDO::FETCH_ASSOC) )
     }
     if ( $ligne['id_membre'] != $_SESSION['membre']['id_membre']){
     $type_action = ($ligne['statut']==0 ? 'Promouvoir':'Dégrader');
-    $contenu .='<td><a href="?action=changestatut&id_membre='.$ligne['id_membre'].'">'.$type_action.'</a>';
+    $contenu .='<td><a href="?action=changestatut&id_membre='.$ligne['id_membre'].'">'.$type_action.'</a></td>';
     $contenu .='<td><a href="?action=suppression&id_membre='.$ligne['id_membre'].'"onclick="return(confirm(\'Etes vous certain de vouloir supprimer ce membre : '.$ligne['nom'].' ?\'))">Supprimer</a></td>';
     }
     $contenu .='</tr>';

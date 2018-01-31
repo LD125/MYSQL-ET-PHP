@@ -96,3 +96,21 @@ footer {
 .h4ajout {
     color : #000;
 }
+
+.tdcomm {
+    font-size : 2rem;   
+    margin : 0;
+    text-align: center;
+    border: 1px solid black;      
+}
+.tablecomm {
+    border: 10px solid black;
+    -webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.13);
+    -moz-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.13);
+    box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.50);
+    margin-top: 5%; 
+}
+
+.tablecomm td {
+    border : 1px solid black;
+}
