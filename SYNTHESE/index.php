@@ -145,9 +145,9 @@ endif;
 //switch
 switch ( $chiffre )
 {
-    case 1 : ...; break;
-    case 2 : ...; break;
-    default: ...; break;
+    //case 1 : ...; break;
+    //case 2 : ...; break;
+   // default: ...; break;
 }
 
 
@@ -168,7 +168,7 @@ srand(); // initialisation du générateur de nombres aléatoires
 $nb = rand(1,10);
 
 // redirection
-header(location:url);
+//header(location:url);
 // ne fonctionne que si je n'ai eu AUCUNE instruction echo avant
 // ni balises html
 
