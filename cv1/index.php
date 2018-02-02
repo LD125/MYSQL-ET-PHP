@@ -174,7 +174,7 @@ if ($_POST)
 							<td class="job">'.$experience['job'].'</td>
 						</tr>
 						<tr>
-							<td class="job_desc">'.$experience['jobdesc'].'</td>
+							<td class="job_desc">'.$experience['description'].'</td>
 						</tr>
 					</table>';
 					}
@@ -199,7 +199,7 @@ if ($_POST)
 							<td class="job">'.$formation['forma'].'</td>
 						</tr>
 						<tr>
-							<td class="job_desc">'.$formation['formadesc'].'</td>
+							<td class="job_desc">'.$formation['description'].'</td>
 						</tr>
 					</table>';
 					}

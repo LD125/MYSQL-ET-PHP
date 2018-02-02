@@ -1,3 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>PROG TV BACK</title>
+    <link href="https://fonts.googleapis.com/css?family=Rammetto+One" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+    
+
 <?php
 
 require_once('init.php');
@@ -5,7 +19,7 @@ require_once('init.php');
 if (isset($_GET['action']) && $_GET['action']=='deconnecter')
 {
     session_destroy();
-    header('location:/mysql-php/cv1/admin');
+    header('location:/mysql-php/tp2/admin');
     exit();
 }
 
@@ -39,15 +53,14 @@ if ( isset($_SESSION['user']) )
     // je suis connecté et j'accède à mon BO
     //echo "youpi ! je me suis connecté";
 
-    $tables_a_exclure=" 'users','messages' ";
+    $tables_a_exclure=" 'users'";
 
-    $mestables=$base->query("SHOW TABLES WHERE Tables_in_portefolio NOT IN (".$tables_a_exclure.")");
+    $mestables=$base->query("SHOW TABLES WHERE Tables_in_tp2 NOT IN (".$tables_a_exclure.")");
     while ( $matable = $mestables->fetch(PDO::FETCH_ASSOC))
     {
-        echo '<a href="?table='.$matable['Tables_in_portefolio'].'">'.ucfirst($matable['Tables_in_portefolio']).'</a> ';
+        echo '<a href="?table='.$matable['Tables_in_tp2'].'">'.ucfirst($matable['Tables_in_tp2']).'</a> ';
     }
-    echo '<a href="?table=messages&option=noform">Messages</a>';
-    echo '<a href="/php/portefolio" target="_black">Voir le front</a> ';
+    echo '<a href="/mysql-php/tp2" target="_blank">Voir le front</a> ';
     echo '<a href="?action=deconnecter">Se deconnecter</a>';
     echo "<hr>";
 
@@ -84,8 +97,6 @@ if ( isset($_SESSION['user']) )
         }
         $maj = $base->prepare("REPLACE INTO ".$_POST['table']." VALUES (".implode(',',$champs).")" );
         $maj->execute($params);
-        var_dump($champs);
-        var_dump($params);
     }
 
 
@@ -107,7 +118,7 @@ if ( isset($_SESSION['user']) )
 
         $resul = $base->query("SELECT * FROM ".$table_courante);
 
-        $affichage .='<table><tr>';
+        $affichage .='<table style="background: #fff"><tr>';
         $nbcolonnes=$resul->columnCount();
 
         // Si on a cliqué sur modifier, on veut charger les infos de la ligne dans le formulaire
@@ -128,7 +139,7 @@ if ( isset($_SESSION['user']) )
         //-----------------------------------------------------------------------------
 
         $formulaire .='<hr>
-        <form action="" method="post">
+        <form style="background : #000; color : #fff" class="col-md-6"  action="" method="post">
         <input type="hidden" name="table" value="'.$table_courante.'">';
 
         for( $i=0; $i < $nbcolonnes; $i++)
@@ -137,7 +148,7 @@ if ( isset($_SESSION['user']) )
             $info_colonne=$resul->getColumnMeta($i);
             if ( $i == 0 ) { 
                 $indice_table =  $info_colonne['name'];
-                $formulaire .='<input type="hidden" name="indice" value="'.((isset($indice_courant) && isset($ligne_courante[$indice_courant])) ? $ligne_courante[$indice_courant] : 0).'">';
+                $formulaire .='<input class="form-control" type="hidden" name="indice" value="'.((isset($indice_courant) && isset($ligne_courante[$indice_courant])) ? $ligne_courante[$indice_courant] : 0).'">';
              }
 
             $affichage .='<th>'.$info_colonne['name'].'</th>';
@@ -149,7 +160,7 @@ if ( isset($_SESSION['user']) )
                 }
                 else
                 {
-                $formulaire .='<input type="text" id="'.$info_colonne['name'].'" name="'.$info_colonne['name'].'" value="'.($ligne_courante[$info_colonne['name']] ?? '' ).'"></p>';
+                $formulaire .='<input class="form-control" type="text" id="'.$info_colonne['name'].'" name="'.$info_colonne['name'].'" value="'.($ligne_courante[$info_colonne['name']] ?? '' ).'"></p>';
                 }
             }
         }
@@ -211,3 +222,6 @@ else
     </form>
     <?php
 }
+?>
+</body>
+</html>

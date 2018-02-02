@@ -1,0 +1,52 @@
+body {
+    background-image: url(../images/asteroids.jpg);
+    font-family: 'Rammetto One', cursive;
+}
+.container-fluid{
+    margin-top: 3%;
+}
+h2 {
+    text-align: center;
+    font-size: 7rem;
+    color : red;
+}
+
+.tableprog{
+    padding: 1%; 
+    margin-bottom : 1%;    
+}
+.programestyle{
+    border: 1px solid black;
+    margin: 0.2%;
+    padding: 1%;
+    background: black;
+    color: #fff !important;
+}
+.programestyle:hover {
+    background-color: #fff;
+    color: #000 !important;
+}
+.nom{
+    font-size : 2rem;
+    font-weight: 700;
+}
+.time1 {
+    font-size : 2rem;
+    font-weight: 600;
+}
+.time2{
+    font-size : 1.5rem;
+    font-weight: 300;
+}
+.image{ 
+    width : 50%;
+    height : auto;
+}
+.public{
+    font-size : 4rem;
+    font-weight: bolder;
+}
+.description{
+    font-size : 1.5rem;
+
+}
